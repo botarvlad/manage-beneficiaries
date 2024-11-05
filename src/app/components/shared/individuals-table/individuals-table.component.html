@@ -1,0 +1,42 @@
+<p-table
+  [value]="individuals"
+  [paginator]="true"
+  [rows]="5"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  [rowsPerPageOptions]="[5, 10, 20]"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="firstName" style="width: 25%">
+        First Name <p-sortIcon field="firstName" />
+      </th>
+      <th pSortableColumn="lastName" style="width: 25%">
+        Last Name <p-sortIcon field="lastName" />
+      </th>
+      <th style="width: 25%">CNP</th>
+      <th pSortableColumn="birthDate" style="width: 25%">
+        Birth Date <p-sortIcon field="birthDate" />
+      </th>
+      <th style="width: 25%">Address</th>
+      <th style="width: 25%">Phone</th>
+      <th style="width: 25%">Ibans</th>
+      <th style="width: 25%">Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-individual>
+    <tr>
+      <td>{{ individual.firstName }}</td>
+      <td>{{ individual.lastName }}</td>
+      <td>{{ individual.personalNumber }}</td>
+      <td>{{ individual.birthDate }}</td>
+      <td>{{ individual.address }}</td>
+      <td>{{ individual.phone }}</td>
+      <td>{{ individual.ibanAccounts }}</td>
+      <td>
+        <button (click)="onViewRecord(individual.id)">View</button>
+        <button (click)="onEditRecord(individual.id)">Edit</button>
+        <button (click)="onDeleteRecord(individual.id)">Delete</button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

@@ -1,0 +1,9 @@
+<h1>Manage Beneficiaries</h1>
+<p-dropdown
+  [options]="beneficiaryTypes"
+  [(ngModel)]="selectedBeneficiaryType"
+  optionLabel="name"
+  placeholder="Select a City"
+/>
+<a [routerLink]="['new']">New Beneficiary</a>
+<ng-container *ngComponentOutlet="getBeneficiaryTableComponent()" />

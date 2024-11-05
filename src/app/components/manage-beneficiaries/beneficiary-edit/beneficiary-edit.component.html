@@ -1,0 +1,88 @@
+<form [formGroup]="beneficiaryForm" (ngSubmit)="onSubmit()">
+  <!-- Beneficiary Type Selection -->
+  <label for="beneficiaryType">Beneficiary Type</label>
+  <select formControlName="beneficiaryType" id="beneficiaryType">
+    <option value="">Select Type</option>
+    <option value="individual">Individual</option>
+    <option value="legalEntity">Legal Entity</option>
+  </select>
+
+  <!-- Common Fields -->
+  <label for="phone">Phone</label>
+  <input id="phone" type="text" formControlName="phone" maxlength="100" />
+
+  <label for="address">Address</label>
+  <input id="address" type="text" formControlName="address" maxlength="100" />
+
+  <!-- IBAN Accounts -->
+  <label>IBAN Accounts</label>
+  <div formArrayName="ibanAccounts">
+    <div *ngFor="let iban of ibanAccounts.controls; let i = index">
+      <input [formControlName]="i" placeholder="IBAN Account" />
+      <button type="button" (click)="removeIbanAccount(i)">Remove</button>
+    </div>
+    <button type="button" (click)="addIbanAccount()">Add IBAN</button>
+  </div>
+
+  <!-- Individual-Specific Fields -->
+  @if (beneficiaryForm.get('beneficiaryType')?.value === 'individual') {
+  <div>
+    <label for="firstName">First Name</label>
+    <input
+      id="firstName"
+      type="text"
+      formControlName="firstName"
+      maxlength="100"
+    />
+
+    <label for="lastName">Last Name</label>
+    <input
+      id="lastName"
+      type="text"
+      formControlName="lastName"
+      maxlength="100"
+    />
+
+    <label for="personalNumber">Personal Number</label>
+    <input
+      id="personalNumber"
+      type="text"
+      formControlName="personalNumber"
+      maxlength="100"
+    />
+
+    <label for="birthDate">Birth Date</label>
+    <input
+      id="birthDate"
+      type="date"
+      formControlName="birthDate"
+      maxlength="100"
+    />
+  </div>
+  }
+
+  <!-- LegalEntity-Specific Fields -->
+  @if (beneficiaryForm.get('beneficiaryType')?.value === 'legalEntity') {
+  <div>
+    <label for="name">Company Name</label>
+    <input id="name" type="text" formControlName="name" maxlength="100" />
+
+    <label for="registrationNumber">Registration Number</label>
+    <input
+      id="registrationNumber"
+      type="text"
+      formControlName="registrationNumber"
+      maxlength="100"
+    />
+
+    <label for="establishmentDate">Establishment Date</label>
+    <input
+      id="establishmentDate"
+      type="date"
+      formControlName="establishmentDate"
+    />
+  </div>
+  }
+
+  <button type="submit" [disabled]="beneficiaryForm.invalid">Submit</button>
+</form>

@@ -1,0 +1,28 @@
+@if (data.length > 0) {
+<p-table
+  [value]="data"
+  [paginator]="true"
+  [rows]="5"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  [rowsPerPageOptions]="[5, 10, 20]"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      @for (column of columns; track column) {
+      <th style="width: 25%">{{ column }}</th>
+      }
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-customer>
+    @for (item of data; track item.id) {
+    <tr>
+      @for (column of columns; track column) {
+      <td>{{ (item as any)[column] }}</td>
+      }
+    </tr>
+    }
+  </ng-template>
+</p-table>
+} @else {
+<p>No Data provided</p>
+}

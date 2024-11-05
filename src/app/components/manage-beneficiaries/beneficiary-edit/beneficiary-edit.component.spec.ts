@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompanyTableComponent } from './company-table.component';
+import { BeneficiaryEditComponent } from './beneficiary-edit.component';
 
-describe('CompanyTableComponent', () => {
-  let component: CompanyTableComponent;
-  let fixture: ComponentFixture<CompanyTableComponent>;
+describe('BeneficiaryEditComponent', () => {
+  let component: BeneficiaryEditComponent;
+  let fixture: ComponentFixture<BeneficiaryEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CompanyTableComponent]
+      imports: [BeneficiaryEditComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(CompanyTableComponent);
+
+    fixture = TestBed.createComponent(BeneficiaryEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
