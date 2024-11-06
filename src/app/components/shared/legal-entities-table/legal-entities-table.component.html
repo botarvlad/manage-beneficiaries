@@ -7,6 +7,9 @@
 >
   <ng-template pTemplate="header">
     <tr>
+      <th pSortableColumn="id" style="width: 8%">
+        Id <p-sortIcon field="id" />
+      </th>
       <th pSortableColumn="name" style="width: 25%">
         Name <p-sortIcon field="name" />
       </th>
@@ -22,17 +25,26 @@
   </ng-template>
   <ng-template pTemplate="body" let-legalEntity>
     <tr>
-      <td>{{ legalEntity.name }}</td>
-      <td>{{ legalEntity.registrationNumber }}</td>
-      <td>{{ legalEntity.establishmentDate }}</td>
-      <td>{{ legalEntity.birthDate }}</td>
-      <td>{{ legalEntity.address }}</td>
-      <td>{{ legalEntity.phone }}</td>
-      <td>{{ legalEntity.ibanAccounts }}</td>
+      <td>{{ legalEntity?.id }}</td>
+      <td>{{ legalEntity?.name }}</td>
+      <td>{{ legalEntity?.registrationNumber }}</td>
+      <td>{{ legalEntity?.establishmentDate | date }}</td>
+      <td>{{ legalEntity?.address }}</td>
+      <td>{{ legalEntity?.phone }}</td>
+      <td>{{ legalEntity?.ibanAccounts.length }}</td>
       <td>
-        <button (click)="onViewRecord(legalEntity.id)">View</button>
-        <button (click)="onEditRecord(legalEntity.id)">Edit</button>
-        <button (click)="onDeleteRecord(legalEntity.id)">Delete</button>
+        <div class="actions">
+          <p-button
+            icon="pi pi-pencil"
+            severity="warning"
+            (click)="onEditRecord(legalEntity.id)"
+          />
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            (click)="onDeleteRecord(legalEntity.id)"
+          />
+        </div>
       </td>
     </tr>
   </ng-template>

@@ -1,0 +1,10 @@
+.beneficiary-container {
+  max-width: 1600px;
+  margin: auto;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+}

@@ -1,9 +1,16 @@
-<h1>Manage Beneficiaries</h1>
-<p-dropdown
-  [options]="beneficiaryTypes"
-  [(ngModel)]="selectedBeneficiaryType"
-  optionLabel="name"
-  placeholder="Select a City"
-/>
-<a [routerLink]="['new']">New Beneficiary</a>
-<ng-container *ngComponentOutlet="getBeneficiaryTableComponent()" />
+<div class="beneficiary-container">
+  <h1>Manage Beneficiaries</h1>
+  <div class="beneficiary-container__header">
+    <p-dropdown
+      [options]="dropdownBeneficiaryData"
+      [(ngModel)]="selectedBeneficiaryType"
+      (ngModelChange)="onBeneficiaryTypeChange($event)"
+      optionLabel="label"
+      placeholder="Select a beneficiary type"
+    />
+    <a [routerLink]="['new']" class="p-button" style="text-decoration: none"
+      >New Beneficiary</a
+    >
+  </div>
+  <ng-container *ngComponentOutlet="getBeneficiaryTableComponent()" />
+</div>

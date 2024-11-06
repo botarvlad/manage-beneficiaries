@@ -11,7 +11,6 @@ export class LegalEntitiesEffects {
     private dbService: NgxIndexedDBService
   ) {}
 
-  // Efect pentru încărcarea persoanelor fizice din IndexedDB
   loadLegalEntities$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LegalEntitiesActions.loadLegalEntities),
@@ -25,18 +24,24 @@ export class LegalEntitiesEffects {
     )
   );
 
-  // Efect pentru adăugarea unui nou individual în IndexedDB
-  addLegalEntity$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(LegalEntitiesActions.addLegalEntity),
-        mergeMap(({ legalEntity }) =>
-          from(this.dbService.add('legalEntities', legalEntity)).pipe(
-            tap((id) => console.log(`legal Entity added with ID: ${id}`))
+  addLegalEntity$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LegalEntitiesActions.addLegalEntity),
+      mergeMap(({ legalEntity }) =>
+        from(this.dbService.add('legalEntities', legalEntity)).pipe(
+          map((legalEntity) =>
+            LegalEntitiesActions.addLegalEntitySuccess({ legalEntity })
+          ),
+          catchError((error) =>
+            of(
+              LegalEntitiesActions.addLegalEntityFailure({
+                error: error.message,
+              })
+            )
           )
         )
-      ),
-    { dispatch: false }
+      )
+    )
   );
 
   updateLegalEntity$ = createEffect(() =>

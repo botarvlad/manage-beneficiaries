@@ -53,7 +53,19 @@ export const legalEntitiesReducer = createReducer(
   })),
   on(LegalEntitiesActions.addLegalEntity, (state, { legalEntity }) => ({
     ...state,
+    loading: true,
+    error: null,
+  })),
+  on(LegalEntitiesActions.addLegalEntitySuccess, (state, { legalEntity }) => ({
+    ...state,
     legalEntities: [...state.legalEntities, legalEntity],
+    loading: false,
+    error: null,
+  })),
+  on(LegalEntitiesActions.addLegalEntityFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
   })),
   on(LegalEntitiesActions.updateLegalEntity, (state, { legalEntity }) => ({
     ...state,

@@ -1,88 +1,114 @@
-<form [formGroup]="beneficiaryForm" (ngSubmit)="onSubmit()">
+<form
+  [formGroup]="beneficiaryForm"
+  (ngSubmit)="onSubmit()"
+  class="form-container"
+>
   <!-- Beneficiary Type Selection -->
-  <label for="beneficiaryType">Beneficiary Type</label>
-  <select formControlName="beneficiaryType" id="beneficiaryType">
-    <option value="">Select Type</option>
-    <option value="individual">Individual</option>
-    <option value="legalEntity">Legal Entity</option>
-  </select>
+  @if (editMode) {
+  <p>Beneficiary Type: {{ beneficiaryType | camelCaseToSpace }}</p>
+  } @else {
+  <div class="input-group">
+    <label for="beneficiaryType">Beneficiary Type</label>
+    <p-dropdown
+      [options]="beneficiaryTypeOptions"
+      formControlName="beneficiaryType"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Select a type"
+    />
+  </div>
+  }
 
   <!-- Common Fields -->
-  <label for="phone">Phone</label>
-  <input id="phone" type="text" formControlName="phone" maxlength="100" />
-
-  <label for="address">Address</label>
-  <input id="address" type="text" formControlName="address" maxlength="100" />
+  <div class="form-container__form-group">
+    <div class="input-group">
+      <label for="phone">Phone</label>
+      <input formControlName="phone" maxlength="100" pInputText />
+    </div>
+    <div class="input-group">
+      <label for="address">Address</label>
+      <input formControlName="address" pInputText maxlength="100" />
+    </div>
+  </div>
 
   <!-- IBAN Accounts -->
-  <label>IBAN Accounts</label>
-  <div formArrayName="ibanAccounts">
-    <div *ngFor="let iban of ibanAccounts.controls; let i = index">
-      <input [formControlName]="i" placeholder="IBAN Account" />
-      <button type="button" (click)="removeIbanAccount(i)">Remove</button>
+  <div class="form-container__form-group">
+    <div class="input-group">
+      <label>IBAN Accounts</label>
+      <div formArrayName="ibanAccounts">
+        <div
+          *ngFor="let iban of ibanAccounts.controls; let i = index"
+          class="iban-input-group"
+        >
+          <input [formControlName]="i" placeholder="IBAN Account" pInputText />
+          <p-button
+            type="button"
+            icon="pi pi-trash"
+            severity="danger"
+            (click)="removeIbanAccount(i)"
+          />
+        </div>
+        <p-button
+          type="button"
+          (click)="addIbanAccount()"
+          label="Add IBAN"
+        ></p-button>
+      </div>
     </div>
-    <button type="button" (click)="addIbanAccount()">Add IBAN</button>
   </div>
 
   <!-- Individual-Specific Fields -->
-  @if (beneficiaryForm.get('beneficiaryType')?.value === 'individual') {
+  @if (beneficiaryForm.get('beneficiaryType')?.value ===
+  BENEFICIARY_TYPES.INDIVIDUAL) {
   <div>
-    <label for="firstName">First Name</label>
-    <input
-      id="firstName"
-      type="text"
-      formControlName="firstName"
-      maxlength="100"
-    />
-
-    <label for="lastName">Last Name</label>
-    <input
-      id="lastName"
-      type="text"
-      formControlName="lastName"
-      maxlength="100"
-    />
-
-    <label for="personalNumber">Personal Number</label>
-    <input
-      id="personalNumber"
-      type="text"
-      formControlName="personalNumber"
-      maxlength="100"
-    />
-
-    <label for="birthDate">Birth Date</label>
-    <input
-      id="birthDate"
-      type="date"
-      formControlName="birthDate"
-      maxlength="100"
-    />
+    <div class="form-container__form-group">
+      <div class="input-group">
+        <label for="firstName">First Name</label>
+        <input formControlName="firstName" pInputText maxlength="100" />
+      </div>
+      <div class="input-group">
+        <label for="lastName">Last Name</label>
+        <input formControlName="lastName" pInputText maxlength="100" />
+      </div>
+      <div class="input-group">
+        <label for="personalNumber">Personal Number</label>
+        <input pInputText formControlName="personalNumber" maxlength="100" />
+      </div>
+      <div class="input-group">
+        <label for="birthDate">Birth Date</label>
+        <p-calendar
+          formControlName="birthDate"
+          iconDisplay="input"
+          [showIcon]="true"
+        />
+      </div>
+    </div>
   </div>
   }
 
   <!-- LegalEntity-Specific Fields -->
-  @if (beneficiaryForm.get('beneficiaryType')?.value === 'legalEntity') {
+  @if (beneficiaryForm.get('beneficiaryType')?.value ===
+  BENEFICIARY_TYPES.LEGAL_ENTITY) {
   <div>
     <label for="name">Company Name</label>
-    <input id="name" type="text" formControlName="name" maxlength="100" />
+    <input formControlName="name" maxlength="100" pInputText />
 
     <label for="registrationNumber">Registration Number</label>
-    <input
-      id="registrationNumber"
-      type="text"
-      formControlName="registrationNumber"
-      maxlength="100"
-    />
+    <input pInputText formControlName="registrationNumber" maxlength="100" />
 
     <label for="establishmentDate">Establishment Date</label>
-    <input
-      id="establishmentDate"
-      type="date"
+    <p-calendar
       formControlName="establishmentDate"
+      iconDisplay="input"
+      [showIcon]="true"
     />
   </div>
   }
 
-  <button type="submit" [disabled]="beneficiaryForm.invalid">Submit</button>
+  <p-button
+    type="submit"
+    severity="success"
+    [disabled]="beneficiaryForm.invalid"
+    label="Submit"
+  ></p-button>
 </form>

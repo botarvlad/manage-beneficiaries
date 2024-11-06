@@ -5,12 +5,15 @@ import { Store } from '@ngrx/store';
 import * as fromApp from '../../../store/app.reducer';
 import * as IndividualActions from '../../../store/individuals-store/individual.actions';
 import { selectAllIndividuals } from '../../../store/individuals-store/individual.selectors';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BENEFICIARY_TYPES } from '../../../shared/constants';
+import { ButtonModule } from 'primeng/button';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-individuals-table',
   standalone: true,
-  imports: [TableModule],
+  imports: [TableModule, ButtonModule, DatePipe],
   templateUrl: './individuals-table.component.html',
   styleUrl: './individuals-table.component.scss',
 })
@@ -30,20 +33,14 @@ export class IndividualsTableComponent implements OnInit {
       .subscribe((individuals) => (this.individuals = [...individuals]));
   }
 
-  onViewRecord(recordId: string) {
-    this.router.navigate([], {
-      queryParams: { type: 'individual', id: recordId },
-    });
-  }
-
-  onEditRecord(id: string) {
+  onEditRecord(id: string): void {
     this.router.navigate([id + '/edit'], {
       relativeTo: this.route,
-      queryParams: { type: 'individual' },
+      queryParams: { type: BENEFICIARY_TYPES.INDIVIDUAL },
     });
   }
 
-  onDeleteRecord(id: number) {
+  onDeleteRecord(id: number): void {
     this.store.dispatch(IndividualActions.deleteIndividual({ id }));
   }
 }

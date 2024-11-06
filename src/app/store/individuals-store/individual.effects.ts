@@ -12,7 +12,6 @@ export class IndividualsEffects {
     private dbService: NgxIndexedDBService
   ) {}
 
-  // Efect pentru încărcarea persoanelor fizice din IndexedDB
   loadIndividuals$ = createEffect(() =>
     this.actions$.pipe(
       ofType(IndividualsActions.loadIndividuals),
@@ -55,18 +54,22 @@ export class IndividualsEffects {
     )
   );
 
-  // Efect pentru adăugarea unui nou individual în IndexedDB
-  addIndividual$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(IndividualsActions.addIndividual),
-        mergeMap(({ individual }) =>
-          from(this.dbService.add('individuals', individual)).pipe(
-            tap((id) => console.log(`Individual added with ID: ${id}`))
+  addIndividual$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(IndividualsActions.addIndividual),
+      mergeMap(({ individual }) =>
+        from(this.dbService.add('individuals', individual)).pipe(
+          map((individual) =>
+            IndividualsActions.addIndividualSuccess({ individual: individual })
+          ),
+          catchError((error) =>
+            of(
+              IndividualsActions.addIndividualFailure({ error: error.message })
+            )
           )
         )
-      ),
-    { dispatch: false } // Setăm dispatch: false, deoarece nu emitem o acțiune în urma adăugării
+      )
+    )
   );
 
   updateIndividual$ = createEffect(() =>

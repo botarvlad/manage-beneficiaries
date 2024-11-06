@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Type } from '@angular/core';
 import { Individual } from '../../models/individual.model';
 import { LegalEntity } from '../../models/legal-entity.model';
 import { DropdownModule } from 'primeng/dropdown';
@@ -7,6 +7,13 @@ import { LegalEntitiesTableComponent } from '../shared/legal-entities-table/lega
 import { IndividualsTableComponent } from '../shared/individuals-table/individuals-table.component';
 import { NgComponentOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { BENEFICIARY_TYPES } from '../../shared/constants';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../../store/app.reducer';
+import {
+  BeneficiaryType,
+  setSelectedBeneficiaryType,
+} from '../../store/beneficiaries-settings-store/beneficiary-settings.actions';
 
 @Component({
   selector: 'app-manage-beneficiaries',
@@ -23,14 +30,37 @@ import { RouterLink } from '@angular/router';
   styleUrl: './manage-beneficiaries.component.scss',
 })
 export class ManageBeneficiariesComponent implements OnInit {
-  beneficiaryTypes = [{ name: 'individuals' }, { name: 'legal-entities' }];
-  selectedBeneficiaryType = this.beneficiaryTypes[0];
+  dropdownBeneficiaryData = [
+    { label: 'Individuals', value: BENEFICIARY_TYPES.INDIVIDUAL },
+    { label: 'Legal Entities', value: BENEFICIARY_TYPES.LEGAL_ENTITY },
+  ];
+  selectedBeneficiaryType: { label: string; value: BeneficiaryType } | null =
+    null;
   beneficiaries: Individual[] | LegalEntity[] = [];
 
-  ngOnInit(): void {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
-  getBeneficiaryTableComponent() {
-    return this.selectedBeneficiaryType.name === 'individuals'
+  ngOnInit(): void {
+    this.store.select('beneficiariesSettings').subscribe((state) => {
+      const indexOfBeneficiaryData = this.dropdownBeneficiaryData.findIndex(
+        (beneficiary) => beneficiary.value === state.selectedBeneficiaryType
+      );
+      this.selectedBeneficiaryType =
+        this.dropdownBeneficiaryData[indexOfBeneficiaryData];
+    });
+  }
+
+  onBeneficiaryTypeChange(selectedType: {
+    label: string;
+    value: BeneficiaryType;
+  }): void {
+    this.store.dispatch(
+      setSelectedBeneficiaryType({ selectedType: selectedType.value })
+    );
+  }
+
+  getBeneficiaryTableComponent(): Type<any> {
+    return this.selectedBeneficiaryType?.value === BENEFICIARY_TYPES.INDIVIDUAL
       ? IndividualsTableComponent
       : LegalEntitiesTableComponent;
   }

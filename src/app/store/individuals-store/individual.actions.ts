@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Individual } from '../../models/individual.model';
+import { IndividualDTO } from '../../models/dtos/individual-dto.model';
 
 export const loadIndividuals = createAction('[Individuals] Load Individuals');
 export const loadIndividualsSuccess = createAction(
@@ -26,7 +27,15 @@ export const loadIndividualFailure = createAction(
 
 export const addIndividual = createAction(
   '[Individuals] Add Individual',
+  props<{ individual: IndividualDTO }>()
+);
+export const addIndividualSuccess = createAction(
+  '[Individuals] Add Individual Success',
   props<{ individual: Individual }>()
+);
+export const addIndividualFailure = createAction(
+  '[Individuals] Add Individual Failure',
+  props<{ error: string }>()
 );
 
 export const updateIndividual = createAction(

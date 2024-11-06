@@ -50,7 +50,18 @@ export const individualReducer = createReducer(
   })),
   on(IndividualActions.addIndividual, (state, { individual }) => ({
     ...state,
+    loading: true,
+    error: null,
+  })),
+  on(IndividualActions.addIndividualSuccess, (state, { individual }) => ({
+    ...state,
     individuals: [...state.individuals, individual],
+    loading: false,
+    error: null,
+  })),
+  on(IndividualActions.addIndividualFailure, (state, { error }) => ({
+    ...state,
+    error,
   })),
   on(IndividualActions.updateIndividual, (state, { individual }) => ({
     ...state,
@@ -62,6 +73,7 @@ export const individualReducer = createReducer(
     individuals: state.individuals.map((existingIndividual) =>
       existingIndividual.id === individual.id ? individual : existingIndividual
     ),
+    loading: false,
     error: null,
   })),
   on(IndividualActions.updateIndividualFailure, (state, { error }) => ({

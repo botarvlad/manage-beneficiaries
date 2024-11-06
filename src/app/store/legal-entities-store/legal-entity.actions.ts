@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { LegalEntity } from '../../models/legal-entity.model';
+import { LegalEntityDTO } from '../../models/dtos/legal-entity-dto.model';
 
 export const loadLegalEntities = createAction(
   '[Legal Entities] Load Legal Entities'
@@ -28,7 +29,15 @@ export const loadLegalEntityFailure = createAction(
 
 export const addLegalEntity = createAction(
   '[Legal Entities] Add Legal Entity',
+  props<{ legalEntity: LegalEntityDTO }>()
+);
+export const addLegalEntitySuccess = createAction(
+  '[Legal Entities] Add Legal Entity Success',
   props<{ legalEntity: LegalEntity }>()
+);
+export const addLegalEntityFailure = createAction(
+  '[Legal Entities] Add Legal Entity Failure',
+  props<{ error: string }>()
 );
 
 export const updateLegalEntity = createAction(

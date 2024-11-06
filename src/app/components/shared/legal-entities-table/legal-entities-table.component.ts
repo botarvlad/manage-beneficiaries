@@ -6,11 +6,14 @@ import { LegalEntity } from '../../../models/legal-entity.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { selectAllLegalEntities } from '../../../store/legal-entities-store/legal-entity.selectors';
 import { TableModule } from 'primeng/table';
+import { BENEFICIARY_TYPES } from '../../../shared/constants';
+import { ButtonModule } from 'primeng/button';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-legal-entities-table',
   standalone: true,
-  imports: [TableModule],
+  imports: [TableModule, ButtonModule, DatePipe],
   templateUrl: './legal-entities-table.component.html',
   styleUrl: './legal-entities-table.component.scss',
 })
@@ -30,20 +33,14 @@ export class LegalEntitiesTableComponent {
       .subscribe((legalEntities) => (this.legalEntities = [...legalEntities]));
   }
 
-  onViewRecord(recordId: string) {
-    this.router.navigate([], {
-      queryParams: { type: 'legalEntity', id: recordId },
-    });
-  }
-
-  onEditRecord(id: string) {
+  onEditRecord(id: string): void {
     this.router.navigate([id + '/edit'], {
       relativeTo: this.route,
-      queryParams: { type: 'legalEntity' },
+      queryParams: { type: BENEFICIARY_TYPES.LEGAL_ENTITY },
     });
   }
 
-  onDeleteRecord(id: number) {
+  onDeleteRecord(id: number): void {
     this.store.dispatch(LegalEntityActions.deleteLegalEntity({ id }));
   }
 }
